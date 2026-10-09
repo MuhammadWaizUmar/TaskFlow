@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: ./taskflow-backend
+    env_file: ./taskflow-backend/.env
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./taskflow-frontend
+      args:
+        VITE_API_URL: http://localhost:5000/api
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
